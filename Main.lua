@@ -11,23 +11,14 @@ local function CheckUpdate()
         return loadstring(game:HttpGet(FluxicConfig.version_url))()
     end)
     
-    if not success then
-        Rayfield:Notify({Title = "Ошибка", Content = "Не удалось проверить обновления", Duration = 5})
-        return false
-    end
+    if not success then return end
 
     if remote.version ~= FluxicConfig.current_version then
-        Rayfield:Notify({
-            Title = "Обновление до v"..remote.version,
-            Content = "Идет загрузка...",
-            Duration = 6.5
-        })
-        
         local newCode = game:HttpGet(remote.update_url)
         
-        -- Проверка хеша (реализуйте SHA-256 функцию)
+        -- Проверка хеша
         if sha256(newCode) ~= remote.hash then
-            error("Хеш не совпадает! Возможна подмена скрипта!")
+            error("Хеш не совпадает: "..sha256(newCode))
         end
         
         loadstring(newCode)()
@@ -36,21 +27,18 @@ local function CheckUpdate()
     return false
 end
 
--- Запуск системы обновлений
+-- Запуск системы
 if not CheckUpdate() then
-    -- Ваш оригинальный код из Fluxic Hub
+    -- Ваш основной код
     local Window = Rayfield:CreateWindow({
-        Name = "Fluxic Hub v"..FluxicConfig.current_version,
-        LoadingTitle = "Загрузка...",
-        LoadingSubtitle = "by Sashasherb",
+        Name = "Fluxic Hub v1.0.0",
+        LoadingTitle = "Инициализация...",
+        LoadingSubtitle = "Хеш: d0a1f2...14d6",
         ConfigurationSaving = {Enabled = true}
     })
     
-    -- ... остальной ваш интерфейс ...
+    -- ... остальной интерфейс ...
 end
 
--- Фоновая проверка каждые 30 минут
-while true do
-    task.wait(1800)
-    pcall(CheckUpdate)
-end
+-- Фоновая проверка
+while task.wait(600) do pcall(CheckUpdate) end
