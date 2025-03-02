@@ -2,7 +2,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 -- Конфигурация автообновления
 local FluxicConfig = {
-    current_version = "1.0.0",
+    current_version = "3.1",
     version_url = "https://gist.githubusercontent.com/SashasherbFluxic/ca21bc9bcf22de3b8c16367acea9cf30/raw/d358eb7e8889c44332edc4694e5a27fe8133ce3a/version.lua"
 }
 
